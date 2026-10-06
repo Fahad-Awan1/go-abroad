@@ -19,32 +19,50 @@
 <header class="site-header" data-header>
   <div class="container site-header__inner">
     <!-- @include logo -->
-    <nav class="nav" aria-label="Primary">
+    <nav class="nav" aria-label="Primary" data-primary-nav>
       <ul class="nav__list">
+        <li><a class="nav__link" href="/" data-nav="home">Home</a></li>
         <li><a class="nav__link" href="/services.html" data-nav="services">Services</a></li>
         <li><a class="nav__link" href="/destinations.html" data-nav="destinations">Destinations</a></li>
         <li><a class="nav__link" href="/study-abroad.html" data-nav="study-abroad">Study Abroad</a></li>
         <li><a class="nav__link" href="/about.html" data-nav="about">About</a></li>
         <li><a class="nav__link" href="/faq.html" data-nav="faq">FAQ</a></li>
-        <li><a class="nav__link nav__link--accent" href="/contact.html" data-nav="contact">Free consultation</a></li>
       </ul>
+      <span class="nav__pill" aria-hidden="true" data-nav-pill></span>
     </nav>
-    <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" data-burger>
-      <span></span><span></span>
-    </button>
+    <div class="site-header__right">
+      <a class="btn btn--primary btn--sm site-header__cta" href="/contact.html" data-nav="contact">Free consultation</a>
+      <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" data-burger>
+        <span class="burger__lines" aria-hidden="true"><i></i><i></i><i></i></span><span class="burger__label">Menu</span>
+      </button>
+    </div>
   </div>
 </header>
 
-<div class="mobile-menu" id="mobile-menu" hidden data-mobile-menu>
-  <div class="mobile-menu__bg"></div>
-  <nav class="mobile-menu__nav container" aria-label="Mobile">
-    <a href="/" data-nav="home"><span>01</span>Home</a>
-    <a href="/services.html" data-nav="services"><span>02</span>Services</a>
-    <a href="/destinations.html" data-nav="destinations"><span>03</span>Destinations</a>
-    <a href="/study-abroad.html" data-nav="study-abroad"><span>04</span>Study Abroad</a>
-    <a href="/about.html" data-nav="about"><span>05</span>About</a>
-    <a href="/faq.html" data-nav="faq"><span>06</span>FAQ</a>
-    <a href="/contact.html" data-nav="contact"><span>07</span>Contact</a>
-    <p class="mobile-menu__foot">+1 713 364-5155 · safersolutionllc@gmail.com</p>
-  </nav>
+<div class="drawer" id="mobile-menu" hidden data-mobile-menu>
+  <div class="drawer__backdrop" data-drawer-close></div>
+  <aside class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="drawer__head">
+      <!-- @include logo -->
+      <button class="drawer__close" type="button" aria-label="Close menu" data-drawer-close><!-- @render icon-close --></button>
+    </div>
+    <nav class="drawer__nav" aria-label="Mobile">
+      <a href="/" data-nav="home"><span class="drawer__icon"><!-- @render icon-home --></span>Home<!-- @render icon-chev-right --></a>
+      <a href="/services.html" data-nav="services"><span class="drawer__icon"><!-- @render icon-briefcase --></span>Services<!-- @render icon-chev-right --></a>
+      <a href="/destinations.html" data-nav="destinations"><span class="drawer__icon"><!-- @render icon-globe --></span>Destinations<!-- @render icon-chev-right --></a>
+      <a href="/study-abroad.html" data-nav="study-abroad"><span class="drawer__icon"><!-- @render icon-cap --></span>Study Abroad<!-- @render icon-chev-right --></a>
+      <a href="/about.html" data-nav="about"><span class="drawer__icon"><!-- @render icon-users --></span>About<!-- @render icon-chev-right --></a>
+      <a href="/faq.html" data-nav="faq"><span class="drawer__icon"><!-- @render icon-chat --></span>FAQ<!-- @render icon-chev-right --></a>
+      <a href="/contact.html" data-nav="contact"><span class="drawer__icon"><!-- @render icon-mail --></span>Contact<!-- @render icon-chev-right --></a>
+    </nav>
+    <div class="drawer__contact">
+      <p class="drawer__eyebrow">Talk to a counsellor</p>
+      <div class="drawer__row">
+        <a class="drawer__pill" href="tel:+17133645155"><!-- @render icon-phone -->Call</a>
+        <a class="drawer__pill drawer__pill--wa" href="https://wa.me/17133645155?text=Hi%20Go%20Abroad%2C%20I%27d%20like%20a%20free%20visa%20assessment" target="_blank" rel="noopener"><!-- @render icon-whatsapp -->WhatsApp</a>
+      </div>
+      <a class="btn btn--primary drawer__book" href="/contact.html">Book free consultation <!-- @render icon-arrow --></a>
+      <p class="drawer__meta">Mon–Sat, 10:00–19:00 · safersolutionllc@gmail.com</p>
+    </div>
+  </aside>
 </div>

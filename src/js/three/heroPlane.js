@@ -13,9 +13,10 @@ export function initHeroPlane(canvas) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
   camera.position.set(0, 0, 20);
-  addEnvironment(renderer, scene, 0.55);
+  const mobile = isMobile();
+  if (!mobile) addEnvironment(renderer, scene, 0.55);
 
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x6fb7c2, 1.1));
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x6fb7c2, mobile ? 1.6 : 1.1));
   const sun = new THREE.DirectionalLight(0xffffff, 2.4);
   sun.position.set(-6, 10, 8);
   scene.add(sun);

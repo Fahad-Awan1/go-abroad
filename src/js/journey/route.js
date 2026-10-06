@@ -20,20 +20,6 @@ const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
 const CONTENT = 'main h1, main h2, main h3, main p, main li, main a, main button, main img, main input, main select, main textarea, main .field, main .dest-card, main .service-card, main .testimonial, main .process__step, main .faq summary, main .chip, main .badge';
 
 
-/** Grainy alpha mask that makes stamps look inked (generated once, no image request). */
-function inkMask() {
-  const c = document.createElement('canvas');
-  c.width = c.height = 96;
-  const g = c.getContext('2d');
-  const img = g.createImageData(96, 96);
-  for (let i = 0; i < img.data.length; i += 4) {
-    img.data[i] = img.data[i + 1] = img.data[i + 2] = 0;
-    img.data[i + 3] = Math.random() < 0.12 ? 60 + Math.random() * 120 : 255;
-  }
-  g.putImageData(img, 0, 0);
-  return `url(${c.toDataURL()})`;
-}
-
 const today = () => new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
 
 /** Top of an element in document coordinates (uses the pin spacer for pinned sections). */
@@ -52,7 +38,6 @@ export function initRoute() {
   const layer = document.createElement('div');
   layer.className = 'journey';
   layer.setAttribute('aria-hidden', 'true');
-  layer.style.setProperty('--ink', inkMask());
   const svg = document.createElementNS(NS, 'svg');
   svg.classList.add('journey__svg');
   const base = document.createElementNS(NS, 'path');
@@ -86,88 +71,119 @@ export function initRoute() {
   document.body.appendChild(layer);
 
   // ---- Geometry ------------------------------------------------------------------
+  // The route is sampled by our own maths (lines + flattened cubic curves), never by
+  // asking the browser for path points, and every layout read happens before any write.
   let lut = { len: [], x: [], y: [] };
   let total = 1;
   let startY = 0, endY = 1;
+  const STEP = 10;
+  const range = document.createRange();
 
   const build = () => {
-    svg.style.height = '0px';
+    svg.style.height = '0px'; // keep the old route from inflating the page while we measure
+
+    // ---- reads --------------------------------------------------------------------
     const vw = document.documentElement.clientWidth;
     const docH = document.documentElement.scrollHeight;
     const mobile = isMobile();
     const ref = document.querySelector('main .container');
-    const cs = ref ? getComputedStyle(ref) : null;
-    const contentLeft = ref ? ref.getBoundingClientRect().left + parseFloat(cs.paddingLeft) : 24;
+    const contentLeft = ref ? ref.getBoundingClientRect().left + parseFloat(getComputedStyle(ref).paddingLeft) : 24;
     const contentRight = vw - contentLeft;
     const gx = { L: Math.max(12, contentLeft / 2), R: Math.min(vw - 12, vw - contentLeft / 2) };
 
-    // resolve sides and boxes
     let prev = 'R';
     stops.forEach((s) => {
       s.side = s.fixed || (prev === 'L' ? 'R' : 'L');
       prev = s.side;
       Object.assign(s, docBox(s.el));
       s.padTop = parseFloat(getComputedStyle(s.el).paddingTop) || 0;
+      const before = s.box.previousElementSibling;
+      s.gapBefore = before ? parseFloat(getComputedStyle(before).paddingBottom) || 0 : 0;
+      s.stampW = s.stamp.offsetWidth || 150;
+      s.stampH = s.stamp.offsetHeight || 50;
     });
+    // Content near each stop. Elements waiting for their entrance animation are still
+    // translated (cards hang 180px above their place), so that offset is removed to get
+    // the resting position. Only the bands around the stops are measured, nothing else.
+    const bands = stops.map((s) => [s.top - 260, s.top + s.padTop + 260]);
+    const near = (y) => bands.some(([a, b]) => y >= a && y <= b);
+    const shiftMemo = new Map();
+    const shift = (node) => { // cumulative translate of an element's own + ancestors' transforms
+      if (!node || node === document.body) return [0, 0];
+      let v = shiftMemo.get(node);
+      if (!v) {
+        const [px, py] = shift(node.parentElement);
+        const tr = getComputedStyle(node).transform;
+        if (tr && tr !== 'none') { const m = new DOMMatrix(tr); v = [px + m.m41, py + m.m42]; } else v = [px, py];
+        shiftMemo.set(node, v);
+      }
+      return v;
+    };
+    const blocks = [];
+    document.querySelectorAll(CONTENT).forEach((e) => {
+      if (e.closest('.journey') || e.offsetParent === null || e.closest('details:not([open]) > :not(summary)')) return;
+      let r = e.getBoundingClientRect();
+      if (!(r.width > 0 && r.height > 0)) return;
+      const [dx, dy] = shift(e);
+      const top = r.top + window.scrollY - dy;
+      if (!near(top) && !near(r.bottom + window.scrollY - dy)) return;
+      // text elements: measure the words themselves, not the full-width block
+      if (/^(H1|H2|H3|P|LI)$/.test(e.tagName)) { range.selectNodeContents(e); r = range.getBoundingClientRect(); }
+      blocks.push({ l: r.left - dx, r: r.right - dx, t: r.top + window.scrollY - dy, b: r.bottom + window.scrollY - dy });
+    });
+
+    // ---- route path ---------------------------------------------------------------
     // phones: hug the screen edges (the plane grows while it crosses in the gaps)
     const xOf = (s) => (mobile ? (s.side === 'L' ? 14 : vw - 14) : gx[s.side]);
-
-    let d = '';
-    const first = stops[0];
+    const first = stops[0], last = stops[stops.length - 1];
     startY = first.top + 4;
-    d += `M${xOf(first)} ${startY}`;
+    endY = Math.max(startY + 10, last.bottom - 48);
+
+    const pts = [[xOf(first), startY]]; // flattened polyline
+    let d = `M${xOf(first)} ${startY}`;
     stops.forEach((s, i) => {
       const next = stops[i + 1];
       if (!next) return;
       const x1 = xOf(s), x2 = xOf(next);
-      if (x1 === x2) { d += ` L${x2} ${next.top}`; return; }
-      // cross inside the gap above the next stop (its preceding sibling's bottom padding)
-      const before = (next.box.previousElementSibling && getComputedStyle(next.box.previousElementSibling).paddingBottom) || '0';
-      const gap = Math.max(60, Math.min(170, parseFloat(before) || 0));
+      if (x1 === x2) { d += ` L${x2} ${next.top}`; pts.push([x2, next.top]); return; }
+      // cross inside the gap above the next stop
+      const gap = Math.max(60, Math.min(170, next.gapBefore));
       const y1 = next.top - gap, y2 = next.top - gap * 0.12, h = y2 - y1;
-      d += ` L${x1} ${y1} C${x1} ${y1 + h * 0.75} ${x2} ${y2 - h * 0.75} ${x2} ${y2}`;
+      const c1y = y1 + h * 0.75, c2y = y2 - h * 0.75;
+      d += ` L${x1} ${y1} C${x1} ${c1y} ${x2} ${c2y} ${x2} ${y2}`;
+      pts.push([x1, y1]);
+      for (let k = 1; k <= 24; k++) {
+        const t = k / 24, u = 1 - t;
+        pts.push([
+          u * u * u * x1 + 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t * x2,
+          u * u * u * y1 + 3 * u * u * t * c1y + 3 * u * t * t * c2y + t * t * t * y2,
+        ]);
+      }
     });
-    const last = stops[stops.length - 1];
-    endY = Math.max(startY + 10, last.bottom - 48);
     d += ` L${xOf(last)} ${endY}`;
+    pts.push([xOf(last), endY]);
 
-    svg.setAttribute('width', vw);
-    svg.setAttribute('height', docH);
-    svg.setAttribute('viewBox', `0 0 ${vw} ${docH}`);
-    svg.style.height = `${docH}px`;
-    base.setAttribute('d', d);
-    trail.setAttribute('d', d);
-    total = trail.getTotalLength() || 1;
-    trail.style.strokeDasharray = `${total} ${total}`;
-
-    // lookup table: length -> point (path y never decreases, so y -> length is a binary search)
-    const step = 6;
+    // length -> point table along the polyline (y never decreases, so y -> length is a binary search)
     lut = { len: [], x: [], y: [] };
-    for (let l = 0; l <= total; l += step) {
-      const p = trail.getPointAtLength(l);
-      lut.len.push(l); lut.x.push(p.x); lut.y.push(p.y);
+    let acc = 0, nextSample = 0;
+    for (let i = 1; i < pts.length; i++) {
+      const [ax, ay] = pts[i - 1], [bx, by] = pts[i];
+      const seg = Math.hypot(bx - ax, by - ay);
+      while (nextSample <= acc + seg) {
+        const t = seg ? (nextSample - acc) / seg : 0;
+        lut.len.push(nextSample); lut.x.push(ax + (bx - ax) * t); lut.y.push(ay + (by - ay) * t);
+        nextSample += STEP;
+      }
+      acc += seg;
     }
+    lut.len.push(acc); lut.x.push(pts[pts.length - 1][0]); lut.y.push(pts[pts.length - 1][1]);
+    total = acc || 1;
 
-    startDot.style.transform = `translate(${xOf(first)}px, ${startY}px)`;
-    endDot.style.transform = `translate(${xOf(last)}px, ${endY}px)`;
-    startDot.classList.toggle('journey__dot--right', first.side === 'R');
-    endDot.classList.toggle('journey__dot--right', last.side === 'R');
-
-    // stamps: try a few spots near each stop and keep the first that touches no content
-    const range = document.createRange();
-    const blocks = [...document.querySelectorAll(CONTENT)]
-      .filter((e) => !e.closest('.journey') && e.offsetParent !== null && !e.closest('details:not([open]) > :not(summary)'))
-      .map((e) => {
-        // text elements: measure the words themselves, not the full-width block
-        let r = e.getBoundingClientRect();
-        if (/^(H1|H2|H3|P|LI)$/.test(e.tagName)) { range.selectNodeContents(e); r = range.getBoundingClientRect(); }
-        return { l: r.left, r: r.right, t: r.top + window.scrollY, b: r.bottom + window.scrollY };
-      })
-      .filter((r) => r.r - r.l > 0 && r.b - r.t > 0);
+    // stamp spots: the first candidate near each stop that touches no content
     const overlap = (c) => blocks.reduce((sum, r) =>
       sum + Math.max(0, Math.min(c.r, r.r) - Math.max(c.l, r.l)) * Math.max(0, Math.min(c.b, r.b) - Math.max(c.t, r.t)), 0);
     stops.forEach((s) => {
-      const w = s.stamp.offsetWidth || 150, h = s.stamp.offsetHeight || 50, m = 10;
+      const w = s.stampW, h = s.stampH, m = 10;
       const sides = [s.side, s.side === 'L' ? 'R' : 'L'];
       // inside the top padding, just above the section edge, straddling the edge, just inside it
       const ys = [s.top + Math.max(0, s.padTop * 0.5 - h / 2), s.top - h - 14, s.top - h / 2, s.top + 8];
@@ -181,9 +197,25 @@ export function initRoute() {
         }
         if (best.score === 0) break;
       }
+      s.stampX = best.x;
       s.stampY = best.y;
-      s.stamp.style.left = `${best.x}px`;
-      s.stamp.style.top = `${best.y}px`;
+    });
+
+    // ---- writes -------------------------------------------------------------------
+    svg.setAttribute('width', vw);
+    svg.setAttribute('height', docH);
+    svg.setAttribute('viewBox', `0 0 ${vw} ${docH}`);
+    svg.style.height = `${docH}px`;
+    base.setAttribute('d', d);
+    trail.setAttribute('d', d);
+    trail.style.strokeDasharray = `${total} ${total}`;
+    startDot.style.transform = `translate(${xOf(first)}px, ${startY}px)`;
+    endDot.style.transform = `translate(${xOf(last)}px, ${endY}px)`;
+    startDot.classList.toggle('journey__dot--right', first.side === 'R');
+    endDot.classList.toggle('journey__dot--right', last.side === 'R');
+    stops.forEach((s) => {
+      s.stamp.style.left = `${s.stampX}px`;
+      s.stamp.style.top = `${s.stampY}px`;
       s.stamp.style.setProperty('--tilt', `${s.tilt}deg`);
     });
   };
@@ -199,8 +231,8 @@ export function initRoute() {
     return lut.len[lo] + t * (lut.len[hi] - lut.len[lo]);
   };
   const pointAt = (l) => {
-    const i = Math.min(lut.len.length - 2, Math.max(0, Math.floor(l / 6)));
-    const t = (l - lut.len[i]) / 6;
+    const i = Math.min(lut.len.length - 2, Math.max(0, Math.floor(l / STEP)));
+    const t = (l - lut.len[i]) / STEP;
     return { x: lut.x[i] + (lut.x[i + 1] - lut.x[i]) * t, y: lut.y[i] + (lut.y[i + 1] - lut.y[i]) * t };
   };
 
@@ -257,7 +289,8 @@ export function initRoute() {
   build();
   frame();
   gsap.ticker.add(frame);
-  ScrollTrigger.addEventListener('refresh', build);
+  let pending = 0;
+  ScrollTrigger.addEventListener('refresh', () => { cancelAnimationFrame(pending); pending = requestAnimationFrame(build); });
   if (document.fonts) document.fonts.ready.then(() => ScrollTrigger.refresh());
   return { rebuild: build };
 }

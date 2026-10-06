@@ -16,7 +16,7 @@ export const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
 
 export function createRenderer(canvas, { maxDpr = 1.75, antialias = true } = {}) {
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile() ? 1.5 : maxDpr));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile() ? 1.25 : maxDpr));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;

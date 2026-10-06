@@ -79,8 +79,3 @@
   .chat__form input { font-size: 16px; } /* prevents iOS zoom */
 }
 
-/* make room for the sticky call-to-action bar on phones */
-@media (max-width: 760px) {
-  html.has-cta-bar .chat { bottom: 86px; }
-  html.has-cta-bar .chat__teaser { bottom: 76px; }
-}

@@ -46,7 +46,7 @@ html.ga-first .flyby, html.ga-fly .flyby { visibility: visible; }
    Journey route (scroll): dotted route, drawn trail, plane, stamps
    One layer in document coordinates; zero height so it never adds scroll length.
    ========================================================================== */
-.journey { position: absolute; top: 0; left: 0; width: 100%; height: 0; z-index: 4; pointer-events: none; }
+.journey { --ink: url('/img/ink.png'); position: absolute; top: 0; left: 0; width: 100%; height: 0; z-index: 4; pointer-events: none; }
 .journey__svg { position: absolute; top: 0; left: 0; overflow: visible; }
 .journey__base { fill: none; stroke: var(--teal-400); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1 9; opacity: 0.55; }
 .journey__trail { fill: none; stroke: var(--teal-600); stroke-width: 2.5; stroke-linecap: round; }
@@ -89,3 +89,9 @@ html.ga-first .flyby, html.ga-fly .flyby { visibility: visible; }
   .stamp__meta { font-size: 0.52rem; }
 }
 @media (prefers-reduced-motion: reduce) { .stamp { opacity: 0.95; } }
+
+/* lighter fly-through on phones: no big blur filter while the plane moves */
+@media (max-width: 760px) {
+  .flyby__plane { filter: none; }
+  .flyby__trail { width: 120vw; }
+}

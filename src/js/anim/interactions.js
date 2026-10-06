@@ -245,6 +245,17 @@ export function initHScroll() {
    Leaving: a big airliner sweeps in from the bottom left trailing a sky wake that covers
    the page. Arriving: the page starts covered (state set before first paint by the head
    script), the same plane flies on to the top right and the sky clears behind it. */
+const prefetched = new Set();
+function prefetch(href) {
+  if (prefetched.has(href)) return;
+  prefetched.add(href);
+  const link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.as = 'document';
+  link.href = href;
+  document.head.appendChild(link);
+}
+
 const leaveHooks = [];
 export const onPageLeave = (fn) => leaveHooks.push(fn);
 export const arrivedByFlight = document.documentElement.classList.contains('ga-fly');
@@ -279,17 +290,23 @@ export function initTransitions() {
     gsap.set(sky, { clipPath: 'circle(150% at 100% 0%)' });
     gsap.set(plane, { x: 0, y: 0, scale: 1, opacity: 1 });
     intro = new Promise((res) => {
-      gsap.timeline({ onComplete: park, delay: first ? 0.45 : 0.1 })
+      gsap.timeline({ onComplete: park, delay: first ? 0.35 : 0 })
         .to(label, { opacity: 0, y: -20, duration: 0.35, ease: 'power2.in' }, 0)
         // the plane flies on towards the top right, climbing and growing as it passes the camera
-        .to(plane, { x: () => W() * 0.75, y: () => -H() * 0.75, scale: 1.6, duration: 1.05, ease: 'power2.in' }, 0)
+        .to(plane, { x: () => W() * 0.75, y: () => -H() * 0.75, scale: 1.6, duration: 0.8, ease: 'power2.in' }, 0)
         // the sky clears behind it, shrinking towards where the plane exits
-        .to(sky, { clipPath: 'circle(0% at 100% 0%)', duration: 1.1, ease: 'power3.inOut' }, 0.15)
-        .add(res, 0.7);
+        .to(sky, { clipPath: 'circle(0% at 100% 0%)', duration: 0.85, ease: 'power3.inOut' }, 0.1)
+        .add(res, 0.45);
     });
   } else {
     park();
   }
+
+  // warm the browser cache for a page as soon as a link is hovered or touched
+  document.addEventListener('pointerenter', (e) => {
+    const a = e.target.closest?.('a[href]');
+    if (a && a.origin === location.origin && !a.hash && a.pathname !== location.pathname) prefetch(a.href);
+  }, true);
 
   if (!reducedMotion) {
     let leaving = false;
@@ -306,15 +323,16 @@ export function initTransitions() {
       const dest = journeyForPath(url.pathname);
       try { sessionStorage.setItem('ga-fly', JSON.stringify({ to: dest.name })); } catch {}
 
+      prefetch(url.href); // start downloading the next page while the plane flies
       nameEl.textContent = dest.name;
       el.style.visibility = 'visible';
       const hooks = leaveHooks.map((fn) => fn(url));
       // sweep in from the bottom left; the sky wake grows out of the corner behind the plane
       gsap.timeline({ onComplete: () => Promise.all(hooks).then(() => (location.href = url.href)) })
         .fromTo(plane, { x: () => -W() * 0.75, y: () => H() * 0.75, scale: 0.55, opacity: 1 },
-          { x: 0, y: 0, scale: 1, duration: 0.95, ease: 'power3.out' }, 0)
-        .fromTo(sky, { clipPath: 'circle(0% at 0% 100%)' }, { clipPath: `circle(150% at 0% 100%)`, duration: 0.95, ease: 'power2.inOut' }, 0.05)
-        .fromTo(label, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 0.55);
+          { x: 0, y: 0, scale: 1, duration: 0.7, ease: 'power3.out' }, 0)
+        .fromTo(sky, { clipPath: 'circle(0% at 0% 100%)' }, { clipPath: 'circle(150% at 0% 100%)', duration: 0.7, ease: 'power2.inOut' }, 0.03)
+        .fromTo(label, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 0.4);
     });
     // restore state when returning via the back/forward cache
     window.addEventListener('pageshow', (e) => {
