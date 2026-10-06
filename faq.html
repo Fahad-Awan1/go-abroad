@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- @include head -->
+  <title>Visa FAQ — Answers to Common Questions | Go Abroad</title>
+  <meta name="description" content="Answers about visa success, IELTS, intakes, part-time work, processing times, fees, refusals and documents.">
+  <meta property="og:title" content="FAQ | Go Abroad">
+  <meta property="og:description" content="Quick answers to the questions our clients ask most.">
+  <!-- @render faq-schema -->
+</head>
+<body data-page="faq">
+  <!-- @include header -->
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container page-hero__grid">
+        <div class="page-hero__copy">
+          <nav class="breadcrumb" aria-label="Breadcrumb" data-intro><a href="/">Home</a><span aria-hidden="true">/</span><span>FAQ</span></nav>
+          <h1 class="h-display split" data-split-immediate>Questions?<br> We've got answers.</h1>
+          <div class="faq-search" data-intro>
+            <!-- @render icon-search -->
+            <label class="sr-only" for="faq-search">Search questions</label>
+            <input id="faq-search" type="search" placeholder="Search e.g. IELTS, refusal, fees…" data-faq-search>
+          </div>
+        </div>
+        <div class="page-hero__stage">
+          <div class="page-hero__fallback"><img src="/img/travel-plan-640.webp" alt="" width="640" height="480"></div>
+          <canvas data-floating="passport" aria-hidden="true"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight" style="padding-top:0">
+      <div class="container faq-layout">
+        <aside class="faq-aside">
+          <div class="contact-card reveal-up">
+            <h2 class="h3">Still curious?</h2>
+            <p class="muted" style="margin:10px 0 20px">Ask Ava, our assistant, for instant answers — or talk to a counsellor.</p>
+            <div class="page-hero__actions" style="margin-top:0">
+              <button class="btn btn--primary btn--sm" type="button" data-chat-ask="Hi">Chat with Ava <!-- @render icon-chat --></button>
+              <a class="btn btn--ghost btn--sm" href="/contact.html">Contact us</a>
+            </div>
+          </div>
+        </aside>
+        <div>
+          <!-- @render faq-list -->
+          <p class="muted" data-faq-empty hidden>No questions match your search. Try another word, or <a class="accent" href="/contact.html">ask us directly</a>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- @include footer -->
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="flyby" aria-hidden="true" data-flyby>
+  <div class="flyby__sky" data-flyby-sky>
+    <div class="flyby__label" data-flyby-label><small>Now arriving</small><strong data-flyby-name>Welcome aboard</strong></div>
+  </div>
+  <div class="flyby__plane" data-flyby-plane><div class="flyby__craft"><span class="flyby__trail"></span><span class="flyby__trail flyby__trail--2"></span><!-- @render plane-top --></div></div>
+</div>
+<script>
+  /* Name the page we are flying into before the first paint (written by the previous page). */
+  (function () {
+    try {
+      var d = JSON.parse(sessionStorage.getItem('ga-fly') || 'null'), n = document.querySelector('[data-flyby-name]');
+      if (d && d.to && n) n.textContent = d.to;
+    } catch (e) {}
+  })();
+</script>
+<div class="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
+
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <!-- @include logo -->
+    <nav class="nav" aria-label="Primary">
+      <ul class="nav__list">
+        <li><a class="nav__link" href="/services.html" data-nav="services">Services</a></li>
+        <li><a class="nav__link" href="/destinations.html" data-nav="destinations">Destinations</a></li>
+        <li><a class="nav__link" href="/study-abroad.html" data-nav="study-abroad">Study Abroad</a></li>
+        <li><a class="nav__link" href="/about.html" data-nav="about">About</a></li>
+        <li><a class="nav__link" href="/faq.html" data-nav="faq">FAQ</a></li>
+        <li><a class="nav__link nav__link--accent" href="/contact.html" data-nav="contact">Free consultation</a></li>
+      </ul>
+    </nav>
+    <button class="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" data-burger>
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" hidden data-mobile-menu>
+  <div class="mobile-menu__bg"></div>
+  <nav class="mobile-menu__nav container" aria-label="Mobile">
+    <a href="/" data-nav="home"><span>01</span>Home</a>
+    <a href="/services.html" data-nav="services"><span>02</span>Services</a>
+    <a href="/destinations.html" data-nav="destinations"><span>03</span>Destinations</a>
+    <a href="/study-abroad.html" data-nav="study-abroad"><span>04</span>Study Abroad</a>
+    <a href="/about.html" data-nav="about"><span>05</span>About</a>
+    <a href="/faq.html" data-nav="faq"><span>06</span>FAQ</a>
+    <a href="/contact.html" data-nav="contact"><span>07</span>Contact</a>
+    <p class="mobile-menu__foot">+1 713 364-5155 · safersolutionllc@gmail.com</p>
+  </nav>
+</div>

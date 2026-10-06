@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- @include head -->
+  <title>Contact & Free Consultation | Go Abroad Visa Consultants</title>
+  <meta name="description" content="Book a free visa consultation with Go Abroad. Visit our Islamabad office, call, WhatsApp or send us your details online.">
+  <meta property="og:title" content="Contact | Go Abroad">
+  <meta property="og:description" content="Book your free profile assessment in under a minute.">
+</head>
+<body data-page="contact">
+  <!-- @include header -->
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container page-hero__grid">
+        <div class="page-hero__copy">
+          <nav class="breadcrumb" aria-label="Breadcrumb" data-intro><a href="/">Home</a><span aria-hidden="true">/</span><span>Contact</span></nav>
+          <h1 class="h-display split" data-split-immediate>Let's get you<br> cleared for take-off.</h1>
+          <p class="lead" data-intro>Tell us a little about your plans and a counsellor will call you within one working day. Your first assessment is always free.</p>
+        </div>
+        <div class="page-hero__stage">
+          <div class="page-hero__fallback"><img src="/img/airport-640.webp" alt="" width="640" height="800"></div>
+          <canvas data-floating="plane" aria-hidden="true"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight" style="padding-top:0">
+      <div class="container contact-grid">
+        <div class="contact-card reveal-up">
+          <form class="contact-form" data-contact-form novalidate>
+            <label class="field">
+              <span class="field__label">Full name *</span>
+              <input class="field__control" name="name" type="text" autocomplete="name" required>
+              <span class="field__error" aria-live="polite"></span>
+            </label>
+            <label class="field">
+              <span class="field__label">Email *</span>
+              <input class="field__control" name="email" type="email" autocomplete="email" required>
+              <span class="field__error" aria-live="polite"></span>
+            </label>
+            <label class="field">
+              <span class="field__label">Phone / WhatsApp *</span>
+              <input class="field__control" name="phone" type="tel" autocomplete="tel" placeholder="Phone with country code" required>
+              <span class="field__error" aria-live="polite"></span>
+            </label>
+            <label class="field">
+              <span class="field__label">Visa type *</span>
+              <select class="field__control" name="service" required>
+                <option value="">Choose…</option>
+                <option value="study">Study visa</option>
+                <option value="work">Work visa</option>
+                <option value="visit">Visit / tourist visa</option>
+                <option value="pr">Immigration / PR</option>
+                <option value="family">Family / spouse visa</option>
+                <option value="test">IELTS / PTE coaching</option>
+              </select>
+              <span class="field__error" aria-live="polite"></span>
+            </label>
+            <label class="field">
+              <span class="field__label">Preferred destination</span>
+              <select class="field__control" name="destination">
+                <option value="">Not sure yet</option>
+                <!-- @render destination-options -->
+              </select>
+            </label>
+            <label class="field">
+              <span class="field__label">Preferred consultation</span>
+              <select class="field__control" name="mode">
+                <option>In office (Islamabad)</option>
+                <option>Phone call</option>
+                <option>Video call</option>
+                <option>WhatsApp</option>
+              </select>
+            </label>
+            <label class="field field--full">
+              <span class="field__label">Tell us about your plans</span>
+              <textarea class="field__control" name="message" rows="5" placeholder="Education, work experience, when you'd like to travel, any previous refusals…"></textarea>
+            </label>
+            <div class="consent">
+              <label class="check"><input type="checkbox" name="consent"> I agree to be contacted by Go Abroad about my enquiry.</label>
+              <span class="field__error" aria-live="polite"></span>
+            </div>
+            <div class="contact-form__submit">
+              <button class="btn btn--primary btn--lg" type="submit">Request free consultation <!-- @render icon-send --></button>
+              <small>We reply within one working day.</small>
+            </div>
+          </form>
+          <div class="form-success" data-form-success hidden tabindex="-1" role="status">
+            <div class="form-success__icon"><!-- @render icon-check --></div>
+            <h2>Thank you, <span data-success-name></span>!</h2>
+            <p class="lead">Your request is in. A Go Abroad counsellor will contact you within one working day.</p>
+            <a class="btn btn--ghost" href="/destinations.html">Explore destinations meanwhile</a>
+          </div>
+        </div>
+
+        <aside class="info-list">
+          <a class="info-item reveal-up" href="https://wa.me/17133645155" target="_blank" rel="noopener"><span class="info-item__icon"><!-- @render icon-whatsapp --></span><div><b>WhatsApp</b><span>+1 713 364-5155 · 7 days a week</span></div></a>
+          <a class="info-item reveal-up" href="tel:+17133645155"><span class="info-item__icon"><!-- @render icon-phone --></span><div><b>Call us</b><span>+1 713 364-5155</span></div></a>
+          <a class="info-item reveal-up" href="mailto:safersolutionllc@gmail.com"><span class="info-item__icon"><!-- @render icon-mail --></span><div><b>Email</b><span>safersolutionllc@gmail.com</span></div></a>
+          <div class="info-item reveal-up"><span class="info-item__icon"><!-- @render icon-pin --></span><div><b>Office</b><span>Office 12, Blue Area, Islamabad<br>Mon–Sat, 10:00–19:00</span></div></div>
+          <div class="map reveal-up">
+            <iframe title="Map showing Go Abroad office in Blue Area, Islamabad" src="https://maps.google.com/maps?q=Blue%20Area%20Islamabad&amp;z=14&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <!-- @include footer -->
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>

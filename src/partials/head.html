@@ -1,0 +1,23 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0E8FA8">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap">
+<meta property="og:site_name" content="Go Abroad">
+<meta property="og:type" content="website">
+<meta property="og:image" content="/img/hero-ocean-1600.webp">
+<meta name="twitter:card" content="summary_large_image">
+<script>
+  /* Decide the intro state before the first paint so nothing flashes:
+     ga-first = first visit (show loader), ga-fly = arriving from an internal link (start covered by the fly-through sky). */
+  (function (d) {
+    var c = d.documentElement.classList, s;
+    c.add('js');
+    try { s = window.sessionStorage; } catch (e) {}
+    if (!s || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (s.getItem('ga-fly')) c.add('ga-fly');
+    else if (s.getItem('ga-visited') !== '1') c.add('ga-first');
+  })(document);
+</script>

@@ -1,0 +1,25 @@
+<div class="chat" data-chat>
+  <button class="chat__launcher" type="button" aria-label="Chat with Go Abroad assistant" aria-expanded="false" aria-controls="chat-panel" data-chat-toggle>
+    <span class="chat__launcher-icon chat__launcher-icon--open"><!-- @render icon-chat --></span>
+    <span class="chat__launcher-icon chat__launcher-icon--close"><!-- @render icon-close --></span>
+    <span class="chat__ping" aria-hidden="true"></span>
+  </button>
+  <div class="chat__teaser" data-chat-teaser hidden>👋 Need help choosing a visa? <b>Ask me!</b></div>
+  <section class="chat__panel" id="chat-panel" role="dialog" aria-modal="false" aria-label="Go Abroad assistant" hidden data-chat-panel>
+    <header class="chat__head">
+      <div class="chat__avatar"><!-- @include logo-mark --></div>
+      <div>
+        <p class="chat__name">Ava · Go Abroad assistant</p>
+        <p class="chat__status"><span></span>Online · replies instantly</p>
+      </div>
+      <button class="chat__close" type="button" aria-label="Close chat" data-chat-close><!-- @render icon-close --></button>
+    </header>
+    <div class="chat__log" role="log" aria-live="polite" data-chat-log></div>
+    <div class="chat__chips" data-chat-chips></div>
+    <form class="chat__form" data-chat-form autocomplete="off">
+      <label class="sr-only" for="chat-input">Type your question</label>
+      <input id="chat-input" name="q" type="text" placeholder="Ask about visas, fees, documents…" maxlength="300" required>
+      <button type="submit" aria-label="Send"><!-- @render icon-send --></button>
+    </form>
+  </section>
+</div>

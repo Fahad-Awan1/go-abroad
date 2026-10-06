@@ -1,0 +1,91 @@
+/* ==========================================================================
+   Page fly-through (first-visit intro + page transitions)
+   A big airliner sweeps across the screen trailing a sky-and-clouds wake that
+   covers the page; on the next page the same plane flies on and the sky clears.
+   Hidden by default; the inline head script adds .ga-first or .ga-fly to <html>
+   before the first paint so an arriving page starts covered, plane centred.
+   GSAP owns the transforms/clip-path at runtime (no CSS transform on animated nodes).
+   ========================================================================== */
+.flyby { position: fixed; inset: 0; z-index: 190; visibility: hidden; pointer-events: none; overflow: hidden; }
+html.ga-first .flyby, html.ga-fly .flyby { visibility: visible; }
+.flyby__sky {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  background:
+    radial-gradient(closest-side, rgba(255,255,255,0.95), rgba(255,255,255,0)) 8% 18% / 46% 34% no-repeat,
+    radial-gradient(closest-side, rgba(255,255,255,0.9), rgba(255,255,255,0)) 88% 26% / 40% 30% no-repeat,
+    radial-gradient(closest-side, rgba(255,255,255,0.85), rgba(255,255,255,0)) 30% 92% / 60% 36% no-repeat,
+    radial-gradient(closest-side, rgba(255,255,255,0.8), rgba(255,255,255,0)) 96% 88% / 44% 30% no-repeat,
+    linear-gradient(160deg, #eaf7f9 0%, #bfe9ee 45%, #7fd0db 100%);
+}
+.flyby__label { display: grid; justify-items: center; gap: 10px; margin-top: 54vh; text-align: center; }
+.flyby__label small { font: 600 0.75rem/1 var(--font-body); letter-spacing: 0.28em; text-transform: uppercase; color: var(--teal-700); }
+.flyby__label strong {
+  font: 700 clamp(2.2rem, 6vw, 4.6rem)/1 var(--font-display); letter-spacing: -0.03em; color: var(--ink-900);
+  text-transform: lowercase;
+}
+.flyby__label strong::first-letter { text-transform: uppercase; }
+.flyby__plane {
+  position: absolute; left: 50%; top: 50%; width: clamp(180px, 22vw, 320px); aspect-ratio: 1;
+  margin: calc(clamp(180px, 22vw, 320px) / -2) 0 0 calc(clamp(180px, 22vw, 320px) / -2);
+  filter: drop-shadow(0 30px 24px rgba(10, 42, 51, 0.28));
+}
+.flyby__craft { position: absolute; inset: 0; transform: rotate(-32deg); } /* static heading; GSAP moves the parent */
+.flyby__plane .plane-top { position: relative; width: 100%; height: 100%; }
+/* contrails streaming from the engines (rotate together with the plane) */
+.flyby__trail {
+  position: absolute; left: 46%; top: 34%; width: 160vw; height: 3px; border-radius: 3px;
+  transform: translate(-100%, -50%);
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0));
+}
+.flyby__trail--2 { top: 66%; }
+@media (max-width: 600px) {
+  .flyby__label { margin-top: 42vh; }
+}
+
+/* ==========================================================================
+   Journey route (scroll): dotted route, drawn trail, plane, stamps
+   One layer in document coordinates; zero height so it never adds scroll length.
+   ========================================================================== */
+.journey { position: absolute; top: 0; left: 0; width: 100%; height: 0; z-index: 4; pointer-events: none; }
+.journey__svg { position: absolute; top: 0; left: 0; overflow: visible; }
+.journey__base { fill: none; stroke: var(--teal-400); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1 9; opacity: 0.55; }
+.journey__trail { fill: none; stroke: var(--teal-600); stroke-width: 2.5; stroke-linecap: round; }
+.journey__plane {
+  position: absolute; top: 0; left: 0; width: 60px; height: 60px; margin: -30px 0 0 -30px;
+  will-change: transform, opacity; filter: drop-shadow(0 10px 8px rgba(10, 42, 51, 0.3)) drop-shadow(0 0 1px rgba(10, 42, 51, 0.5));
+}
+.journey__plane svg { width: 100%; height: 100%; }
+.journey__dot { position: absolute; top: 0; left: 0; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--teal-600); box-shadow: 0 0 0 5px rgba(43, 184, 201, 0.2); }
+.journey__dot span {
+  position: absolute; left: 50%; top: -26px; transform: translateX(-50%);
+  font: 700 0.68rem/1 var(--font-display); letter-spacing: 0.12em; color: var(--teal-700);
+  background: #fff; padding: 4px 7px; border-radius: 999px; box-shadow: var(--shadow-sm); white-space: nowrap;
+}
+.journey__dot--end { background: var(--ink-900); }
+.journey__dot--end span { top: 18px; }
+
+.stamp {
+  --c: var(--teal-700);
+  position: absolute; display: grid; gap: 3px; justify-items: center; padding: 9px 16px 8px;
+  border: 2.5px solid var(--c); border-radius: 12px; color: var(--c); opacity: 0;
+  outline: 1px solid var(--c); outline-offset: 3px;
+  transform: rotate(var(--tilt, -4deg)); transform-origin: center;
+  -webkit-mask-image: var(--ink); mask-image: var(--ink); -webkit-mask-size: 96px; mask-size: 96px;
+  mix-blend-mode: multiply; white-space: nowrap;
+}
+.stamp__stage { font: 800 0.86rem/1 var(--font-display); letter-spacing: 0.16em; }
+.stamp__meta { font: 600 0.6rem/1 var(--font-body); letter-spacing: 0.14em; }
+.stamp--light { --c: #7fe0ea; mix-blend-mode: screen; }
+
+@media (max-width: 900px) {
+  .journey__base, .journey__trail { stroke-width: 1.5; }
+  .journey__plane { width: 30px; height: 30px; margin: -15px 0 0 -15px; filter: drop-shadow(0 0 3px #fff) drop-shadow(0 6px 5px rgba(10, 42, 51, 0.35)); }
+  .journey__dot { width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; box-shadow: 0 0 0 3px rgba(43, 184, 201, 0.2); }
+  .journey__dot span { left: 6px; transform: none; font-size: 0.6rem; }
+  .journey__dot--right span { left: auto; right: 6px; }
+  .stamp { padding: 6px 10px 5px; border-width: 2px; border-radius: 9px; background: rgba(255, 255, 255, 0.92); mix-blend-mode: normal; }
+  .stamp--light { background: rgba(6, 26, 32, 0.9); }
+  .stamp__stage { font-size: 0.7rem; }
+  .stamp__meta { font-size: 0.52rem; }
+}
+@media (prefers-reduced-motion: reduce) { .stamp { opacity: 0.95; } }

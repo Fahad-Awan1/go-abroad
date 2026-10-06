@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- @include head -->
+  <title>Go Abroad — Visa & Immigration Consultants | Study, Work, Visit, PR</title>
+  <meta name="description" content="Go Abroad helps students, professionals and families get study, work, visit and PR visas for Canada, the UK, USA, Australia, Germany, Schengen and more. Free assessment.">
+  <meta property="og:title" content="Go Abroad — Visa & Immigration Consultants">
+  <meta property="og:description" content="Discover the world with the right visa. Free profile assessment for study, work, visit and PR visas.">
+  <link rel="preload" as="image" type="image/avif" href="/img/hero-ocean-1600.avif" imagesrcset="/img/hero-ocean-640.avif 640w, /img/hero-ocean-1080.avif 1080w, /img/hero-ocean-1600.avif 1600w, /img/hero-ocean-2200.avif 2200w" imagesizes="(max-width: 900px) 100vw, 62vw">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"ProfessionalService","name":"Go Abroad Consultants","description":"Visa and immigration consultancy for study, work, visit and PR visas.","telephone":"+1 713 364-5155","email":"safersolutionllc@gmail.com","address":{"@type":"PostalAddress","streetAddress":"Office 12, Blue Area","addressLocality":"Islamabad","addressCountry":"PK"},"openingHours":"Mo-Sa 10:00-19:00","areaServed":"Worldwide"}
+  </script>
+</head>
+<body data-page="home">
+  <!-- @include header -->
+
+  <main id="main">
+    <!-- ================= HERO ================= -->
+    <section class="hero" data-hero>
+      <div class="hero__visual" data-hero-visual>
+        <picture>
+          <source type="image/avif" srcset="/img/hero-ocean-640.avif 640w, /img/hero-ocean-1080.avif 1080w, /img/hero-ocean-1600.avif 1600w, /img/hero-ocean-2200.avif 2200w" sizes="(max-width: 900px) 100vw, 62vw">
+          <img src="/img/hero-ocean-1600.webp" srcset="/img/hero-ocean-640.webp 640w, /img/hero-ocean-1080.webp 1080w, /img/hero-ocean-1600.webp 1600w, /img/hero-ocean-2200.webp 2200w" sizes="(max-width: 900px) 100vw, 62vw" alt="Aerial view of a turquoise lagoon and white sand beach" fetchpriority="high" width="2200" height="1467">
+        </picture>
+        <div class="hero__clouds-fallback" aria-hidden="true"></div>
+      </div>
+      <canvas class="hero__canvas" data-hero-canvas aria-hidden="true"></canvas>
+
+      <div class="container hero__content">
+        <p class="eyebrow hero__eyebrow" data-intro>Visa &amp; immigration consultants</p>
+        <h1 class="hero__title split" data-split-immediate>Discover the world<br> with the right visa.</h1>
+
+        <form class="visa-search" data-intro data-visa-search aria-label="Find your visa">
+          <fieldset class="visa-search__types">
+            <legend class="sr-only">Visa type</legend>
+            <label class="check"><input type="radio" name="type" value="study" checked> Study</label>
+            <label class="check"><input type="radio" name="type" value="work"> Work</label>
+            <label class="check"><input type="radio" name="type" value="visit"> Visit</label>
+            <label class="check"><input type="radio" name="type" value="pr"> Immigration / PR</label>
+          </fieldset>
+          <div class="visa-search__grid">
+            <label class="field">
+              <span class="field__label">Country · Living in</span>
+              <select class="field__control" name="from">
+                <option>Pakistan</option><option>India</option><option>Bangladesh</option><option>UAE</option><option>Saudi Arabia</option><option>Nigeria</option><option>Other</option>
+              </select>
+            </label>
+            <span class="visa-search__icon visa-search__icon--planes" aria-hidden="true"><!-- @render icon-plane --><!-- @render icon-plane --></span>
+            <label class="field">
+              <span class="field__label">Country · Destination</span>
+              <select class="field__control" name="destination">
+                <!-- @render destination-options -->
+              </select>
+            </label>
+            <span aria-hidden="true"></span>
+            <label class="field">
+              <span class="field__label">When · Planned intake / travel</span>
+              <select class="field__control" name="when"><option>As soon as possible</option><option>Within 3 months</option><option>In 3–6 months</option><option>In 6–12 months</option><option>Next year</option></select>
+            </label>
+            <span class="visa-search__icon" aria-hidden="true"><!-- @render icon-calendar --></span>
+            <label class="field">
+              <span class="field__label">Applicants</span>
+              <select class="field__control" name="applicants">
+                <option value="1">Just me</option><option value="2">2 people</option><option value="3">3 people</option><option value="4">Family (4+)</option>
+              </select>
+            </label>
+            <button class="visa-search__submit" type="submit" aria-label="Check my options"><!-- @render icon-search --></button>
+          </div>
+        </form>
+
+        <div class="slider hero__slider" data-slider>
+          <div class="slider__head" data-intro>
+            <h2 class="slider__title">Popular destinations</h2>
+            <div class="slider__nav">
+              <button type="button" aria-label="Previous" data-slider-prev><!-- @render icon-chev-left --></button>
+              <button type="button" aria-label="Next" data-slider-next><!-- @render icon-chev-right --></button>
+            </div>
+          </div>
+          <div class="slider__viewport" data-slider-viewport data-cursor="Drag">
+            <div class="slider__track" data-slider-track>
+              <!-- @render destination-cards -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a class="hero__badge badge" href="#intro" aria-label="Scroll to discover" data-badge>
+        <svg class="badge__ring" viewBox="0 0 120 120" aria-hidden="true">
+          <defs><path id="badge-circle" d="M60 60m-48 0a48 48 0 1 1 96 0a48 48 0 1 1-96 0"/></defs>
+          <text><textPath href="#badge-circle">Scroll to discover · Go Abroad · Since 2012 ·</textPath></text>
+        </svg>
+        <span class="badge__core"><!-- @render icon-plane --></span>
+      </a>
+    </section>
+
+    <!-- ================= INTRO / STATS ================= -->
+    <section class="section intro" id="intro">
+      <div class="container">
+        <p class="eyebrow">Who we are</p>
+        <p class="intro__statement split">We turn the paperwork of moving abroad into a clear, confident journey — from the first question to the <span class="accent">boarding gate</span>.</p>
+        <div class="intro__grid">
+          <figure class="intro__media img-reveal" data-parallax-media>
+            <img src="/img/airport-640.webp" srcset="/img/airport-640.webp 640w, /img/airport-1280.webp 1280w" sizes="(max-width: 800px) 100vw, 40vw" alt="Traveller relaxing at an airport gate as a plane takes off" loading="lazy" decoding="async" width="1280" height="1600">
+          </figure>
+          <div class="intro__copy">
+            <p class="lead reveal-up">Go Abroad is a team of licensed visa consultants, education counsellors and documentation specialists. We study your profile, choose the strongest route and build an application embassies can say yes to.</p>
+            <ul class="stats">
+              <li class="reveal-up"><b data-count="98">0</b><span>%</span><p>Visa success rate</p></li>
+              <li class="reveal-up"><b data-count="12500">0</b><span>+</span><p>Visas approved</p></li>
+              <li class="reveal-up"><b data-count="14">0</b><span>yrs</span><p>Of experience</p></li>
+              <li class="reveal-up"><b data-count="350">0</b><span>+</span><p>Partner universities</p></li>
+            </ul>
+            <a class="btn btn--ghost reveal-up" href="/about.html">More about us <!-- @render icon-arrow --></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SERVICES ================= -->
+    <section class="section section--mist services">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">What we do</p>
+            <h2 class="h2 split">Every visa, one trusted team.</h2>
+            <p class="lead reveal-up">Whether you are chasing a degree, a career, a holiday or a new home, we handle the strategy and the paperwork.</p>
+          </div>
+          <a class="btn btn--primary magnetic reveal-up" href="/services.html">All services <!-- @render icon-arrow --></a>
+        </div>
+        <div class="services-grid">
+          <!-- @render services-cards -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROCESS (pinned) ================= -->
+    <section class="process" data-process>
+      <div class="process__pin">
+        <div class="container process__inner">
+          <div class="process__intro">
+            <p class="eyebrow">How it works</p>
+            <h2 class="h2 split">Four steps from dream to departure.</h2>
+            <div class="process__meter" aria-hidden="true"><span data-process-meter></span><i data-process-plane><!-- @render icon-plane --></i></div>
+          </div>
+          <ol class="process__steps">
+            <li class="process__step" data-step>
+              <span class="process__num">01</span>
+              <h3>Free profile assessment</h3>
+              <p>Tell us about your education, work history, finances and goals. We map every route you qualify for — in one honest conversation.</p>
+            </li>
+            <li class="process__step" data-step>
+              <span class="process__num">02</span>
+              <h3>Strategy &amp; documents</h3>
+              <p>We pick the strongest country and visa, then hand you a personalised checklist and review every document before it is submitted.</p>
+            </li>
+            <li class="process__step" data-step>
+              <span class="process__num">03</span>
+              <h3>Application &amp; interview prep</h3>
+              <p>We file your application, book biometrics and appointments, and run mock interviews until you feel completely ready.</p>
+            </li>
+            <li class="process__step" data-step>
+              <span class="process__num">04</span>
+              <h3>Visa approved — fly!</h3>
+              <p>Pre-departure briefing, accommodation tips, forex and airport pickup guidance. We stay in touch after you land.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= GLOBE ================= -->
+    <section class="section section--dark globe-section" data-globe-section>
+      <div class="container globe-section__grid">
+        <div class="globe-section__copy">
+          <p class="eyebrow">Where we fly you</p>
+          <h2 class="h2 split">Eight countries. Thousands of new beginnings.</h2>
+          <p class="lead reveal-up">Hover a destination to spin the globe. Every arc is a route our clients have travelled.</p>
+          <ul class="globe-list" data-globe-list>
+            <li><button type="button" data-country="canada"><img class="flag" src="/flags/ca.svg" alt="" width="24" height="18" loading="lazy"> Canada</button></li>
+            <li><button type="button" data-country="uk"><img class="flag" src="/flags/gb.svg" alt="" width="24" height="18" loading="lazy"> United Kingdom</button></li>
+            <li><button type="button" data-country="usa"><img class="flag" src="/flags/us.svg" alt="" width="24" height="18" loading="lazy"> United States</button></li>
+            <li><button type="button" data-country="australia"><img class="flag" src="/flags/au.svg" alt="" width="24" height="18" loading="lazy"> Australia</button></li>
+            <li><button type="button" data-country="germany"><img class="flag" src="/flags/de.svg" alt="" width="24" height="18" loading="lazy"> Germany</button></li>
+            <li><button type="button" data-country="schengen"><img class="flag" src="/flags/eu.svg" alt="" width="24" height="18" loading="lazy"> Schengen</button></li>
+            <li><button type="button" data-country="new-zealand"><img class="flag" src="/flags/nz.svg" alt="" width="24" height="18" loading="lazy"> New Zealand</button></li>
+            <li><button type="button" data-country="ireland"><img class="flag" src="/flags/ie.svg" alt="" width="24" height="18" loading="lazy"> Ireland</button></li>
+          </ul>
+          <a class="btn btn--light magnetic" href="/destinations.html">Explore destinations <!-- @render icon-arrow --></a>
+        </div>
+        <div class="globe-section__stage">
+          <canvas class="globe-canvas" data-globe-canvas aria-label="Interactive 3D globe showing flight routes from Pakistan to our destinations" role="img"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= STUDY FEATURE ================= -->
+    <section class="section feature">
+      <div class="container feature__grid">
+        <div class="feature__media">
+          <figure class="feature__img feature__img--a img-reveal" data-parallax-media>
+            <img src="/img/graduation-640.webp" srcset="/img/graduation-640.webp 640w, /img/graduation-1280.webp 1280w" sizes="(max-width: 800px) 90vw, 40vw" alt="Graduates throwing caps in the air" loading="lazy" decoding="async" width="1280" height="853">
+          </figure>
+          <figure class="feature__img feature__img--b img-reveal" data-parallax-media>
+            <img src="/img/students-640.webp" srcset="/img/students-640.webp 640w, /img/students-1280.webp 1280w" sizes="(max-width: 800px) 60vw, 24vw" alt="International students working together" loading="lazy" decoding="async" width="1280" height="960">
+          </figure>
+          <div class="feature__badge badge badge--small" data-badge>
+            <svg class="badge__ring" viewBox="0 0 120 120" aria-hidden="true">
+              <defs><path id="badge-circle-2" d="M60 60m-48 0a48 48 0 1 1 96 0a48 48 0 1 1-96 0"/></defs>
+              <text><textPath href="#badge-circle-2">350+ partner universities · Worldwide ·</textPath></text>
+            </svg>
+            <span class="badge__core"><!-- @render icon-cap --></span>
+          </div>
+        </div>
+        <div class="feature__copy">
+          <p class="eyebrow">Study abroad</p>
+          <h2 class="h2 split">Your degree, your campus, your future.</h2>
+          <p class="lead reveal-up">From shortlisting universities to scholarships and your student visa, our counsellors guide you through every intake.</p>
+          <ul class="checklist reveal-up">
+            <li><!-- @render icon-check -->Course &amp; university shortlisting</li>
+            <li><!-- @render icon-check -->SOP, CV and recommendation letters</li>
+            <li><!-- @render icon-check -->Scholarship &amp; tuition discount hunting</li>
+            <li><!-- @render icon-check -->IELTS / PTE coaching and booking</li>
+          </ul>
+          <a class="btn btn--primary magnetic reveal-up" href="/study-abroad.html">Plan my studies <!-- @render icon-arrow --></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TESTIMONIALS ================= -->
+    <section class="section section--mist testimonials">
+      <div class="container section-head">
+        <div>
+          <p class="eyebrow">Stories</p>
+          <h2 class="h2 split">Real people, real visas.</h2>
+        </div>
+        <div class="rating reveal-up"><b>4.9</b><span><span class="testimonial__stars"><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --></span>from 1,200+ reviews</span></div>
+      </div>
+      <div class="marquee testimonials__marquee" data-marquee data-speed="40">
+        <div class="marquee__track">
+          <figure class="testimonial">
+            <div class="testimonial__stars"><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --></div>
+            <blockquote>“I had a UK refusal before. Go Abroad rebuilt my file from scratch and I got my student visa in three weeks. Now I'm doing my master's in Manchester!”</blockquote>
+            <figcaption><img src="/img/person-1-160.webp" alt="" loading="lazy" width="160" height="160"><div><b>Ayesha K.</b><span>MSc Data Science</span></div><span class="testimonial__visa">UK Study</span></figcaption>
+          </figure>
+          <figure class="testimonial">
+            <div class="testimonial__stars"><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --></div>
+            <blockquote>“They calculated my CRS score, told me exactly how to raise it and handled the whole Express Entry profile. Landed in Toronto with my family last spring.”</blockquote>
+            <figcaption><img src="/img/person-2-160.webp" alt="" loading="lazy" width="160" height="160"><div><b>Usman R.</b><span>Software engineer</span></div><span class="testimonial__visa">Canada PR</span></figcaption>
+          </figure>
+          <figure class="testimonial">
+            <div class="testimonial__stars"><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --></div>
+            <blockquote>“Our Schengen visas for the whole family were approved first time. The itinerary and cover letters they prepared were spot on.”</blockquote>
+            <figcaption><img src="/img/person-4-160.webp" alt="" loading="lazy" width="160" height="160"><div><b>Sana &amp; Bilal</b><span>Family holiday</span></div><span class="testimonial__visa">Schengen Visit</span></figcaption>
+          </figure>
+          <figure class="testimonial">
+            <div class="testimonial__stars"><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --></div>
+            <blockquote>“The mock interviews made all the difference. I walked into the embassy calm and walked out with my F-1 visa.”</blockquote>
+            <figcaption><img src="/img/person-3-160.webp" alt="" loading="lazy" width="160" height="160"><div><b>Hamza T.</b><span>MS Computer Science</span></div><span class="testimonial__visa">USA F-1</span></figcaption>
+          </figure>
+          <figure class="testimonial">
+            <div class="testimonial__stars"><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --></div>
+            <blockquote>“From blocked account to university admission in Munich, everything was explained clearly. Super responsive team on WhatsApp.”</blockquote>
+            <figcaption><img src="/img/person-5-160.webp" alt="" loading="lazy" width="160" height="160"><div><b>Mariam S.</b><span>MEng Mechatronics</span></div><span class="testimonial__visa">Germany Study</span></figcaption>
+          </figure>
+          <figure class="testimonial">
+            <div class="testimonial__stars"><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --><!-- @render icon-star --></div>
+            <blockquote>“Skills assessment, points test, state nomination — they handled it all and kept me updated at every step. Highly recommended.”</blockquote>
+            <figcaption><img src="/img/person-6-160.webp" alt="" loading="lazy" width="160" height="160"><div><b>Ali H.</b><span>Civil engineer</span></div><span class="testimonial__visa">Australia 190</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- @include footer -->
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>
